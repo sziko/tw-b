@@ -18,7 +18,7 @@ public class UserService {
     }
 
     public boolean registerUser(User user) {
-        if(isUsernameValid(user.getUsername())) {
+        if (!isUsernameValid(user.getUsername())) {
             user.setPassword(Security.hash(user.getPassword()));
             userRepository.save(user);
 
@@ -29,11 +29,20 @@ public class UserService {
     }
 
     public boolean loginUser(UserDTO userDTO) {
+        if (isUsernameValid(userDTO.getUsername())) {
+            return isPasswordValid(userDTO);
+        }
 
-        return true;
+        return false;
     }
 
     private boolean isUsernameValid(String username) {
-        return this.userRepository.findByUsername(username) == null;
+        return userRepository.findByUsername(username) != null;
+    }
+
+    // finds user by username and checks if password matches
+    private boolean isPasswordValid(UserDTO userDTO) {
+        return userRepository.findByUsername(userDTO.getUsername())
+                .getPassword().equals(Security.hash(userDTO.getPassword()));
     }
 }

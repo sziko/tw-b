@@ -1,5 +1,6 @@
 package com.example.twb.controller;
 
+import com.example.twb.dto.UserDTO;
 import com.example.twb.entity.Response;
 import com.example.twb.entity.User;
 import com.example.twb.service.UserService;
@@ -20,6 +21,15 @@ public class UserController {
     @PostMapping("/register")
     public Response registerUser(@RequestBody User user) {
         if(userService.registerUser(user)) {
+            return new Response("Ok");
+        }
+
+        return new Response("Conflict");
+    }
+
+    @PostMapping("/login")
+    public Response login(@RequestBody UserDTO userDTO) {
+        if(userService.loginUser(userDTO)) {
             return new Response("Ok");
         }
 

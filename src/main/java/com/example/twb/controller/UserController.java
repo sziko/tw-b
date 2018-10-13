@@ -19,7 +19,7 @@ public class UserController {
 
     @PostMapping("/register")
     public Response registerUser(@RequestBody User user) {
-        if(this.userService.registerUser(user)) {
+        if(userService.registerUser(user)) {
             return new Response("Ok");
         }
 
